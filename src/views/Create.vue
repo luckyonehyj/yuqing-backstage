@@ -105,7 +105,7 @@ export default {
           })
             .then(() => {
               let formData = JSON.stringify(this.form);
-              this.$http.get("test.php", formData).then(
+              this.$http.post("test.php", formData).then(
                 res => {
                   console.log(res);
                 },

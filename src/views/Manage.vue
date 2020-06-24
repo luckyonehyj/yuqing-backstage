@@ -9,7 +9,7 @@
     <!-- 查询板块 -->
     <el-form ref="form" :model="form" label-width="100px" style="display:flex" size="mini">
       <!-- 按板块查询 -->
-      <el-form-item label="按板块查询:" style="margin-left: -10px">
+      <el-form-item label="按板块查询:" style="margin-left: -10px" prop="plate">
         <el-select v-model="form.plate" placeholder="请选择板块">
           <el-option label="零陵舆情" value="yuqing"></el-option>
           <el-option label="敏感信息" value="mingan"></el-option>
@@ -18,17 +18,17 @@
         </el-select>
       </el-form-item>
       <!-- 按标题查询 -->
-      <el-form-item label="按标题查询:">
+      <el-form-item label="按标题查询:" prop="title">
         <el-input v-model="form.title" placeholder="请输入关键字" class="search"></el-input>
       </el-form-item>
       <!-- 按日期查询 -->
-      <el-form-item label="按日期查询:">
+      <el-form-item label="按日期查询:" prop="date">
         <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
       </el-form-item>
       <!-- 查询/取消 按钮 -->
       <el-form-item class="submmit">
         <el-button type="primary" style="margin: 0 5px 0 -80px" @click="handleSearch('form')">查询</el-button>
-        <el-button @click="handleCancel('form')">取消</el-button>
+        <el-button @click="resetForm('form')">取消</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -97,8 +97,7 @@ export default {
           id: "0",
           date: "2016-05-02",
           plate: "零陵舆情",
-          title:
-            "王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎",
+          title: "aaa王小虎王小虎王小虎王小虎王小",
           brief:
             "上海市普陀区金沙江路 1518 弄王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎"
         },
@@ -280,6 +279,7 @@ export default {
       this.$http.get("", formData).then(
         res => {
           console.log(res);
+          // this.form = res.
           this.$refs[formName].resetFields();
         },
         err => {
@@ -287,10 +287,9 @@ export default {
           this.$refs[formName].resetFields();
         }
       );
-      console.dir(this.form);
     },
     //取消查询，清空表单
-    handleCancel(formName) {
+    resetForm(formName) {
       this.$refs[formName].resetFields();
     },
     //编辑舆情
@@ -333,6 +332,12 @@ export default {
   },
   mounted() {
     this.getData();
+    bus.$on("updateTable", e => {
+      let obj = JSON.parse(e);
+      let id = obj.id;
+      let index = this.tableData.findIndex(x => x.id === id);
+      this.$set(this.tableData, index, obj);
+    });
   }
 };
 </script>

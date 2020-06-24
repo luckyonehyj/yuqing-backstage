@@ -104,9 +104,10 @@ export default {
               this.dialogVisible = false;
 
               let formData = JSON.stringify(this.form);
-              this.$http.get("test.php", formData).then(
+              this.$http.get("", formData).then(
                 res => {
                   console.log(res);
+                  bus.$emit("updateTable", formData);
                 },
                 err => {
                   console.log(err);
