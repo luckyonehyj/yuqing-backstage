@@ -25,9 +25,9 @@
         <el-input v-model="form.title" placeholder="请输入关键字" class="search"></el-input>
       </el-form-item>
       <!-- 按日期查询 -->
-      <el-form-item label="按日期查询:" prop="date">
+      <!-- <el-form-item label="按日期查询:" prop="date">
         <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
-      </el-form-item>
+      </el-form-item>-->
       <!-- 查询/取消 按钮 -->
       <el-form-item class="submmit">
         <el-button type="primary" style="margin: 0 5px 0 -80px" @click="handleSearch('form')">查询</el-button>
@@ -44,8 +44,8 @@
       size="small"
       ref="table"
     >
-      <el-table-column type="index"></el-table-column>
-      <el-table-column prop="date" label="日期" width="130" sortable></el-table-column>
+      <el-table-column type="index" width="60"></el-table-column>
+      <!-- <el-table-column prop="date" label="日期" width="130" sortable></el-table-column> -->
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="brief" label="简介"></el-table-column>
       <el-table-column prop="operation" label="编辑/删除" width="130">
@@ -91,17 +91,17 @@ export default {
       // 舆情查询关键字
       form: {
         plate: "",
-        title: "",
-        date: ""
+        title: ""
+        // date: ""
       },
       //舆情表格数据
       tableData: [
         {
           id: "12",
           date: "2016-05-02",
-          title: "12345",
+          title: "12345ddddddddddddddddddddddddddddddddddddddddddddddd",
           plate: "零陵舆情",
-          brief: "上海市普陀区金沙江路 1518 弄",
+          brief: "上海市普陀区金沙江路 1518 弄ddddddddddddddddddddddddddd",
           content: "dddddd"
         },
         {

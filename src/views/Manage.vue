@@ -21,7 +21,8 @@
     <el-table
       :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
       style="width: 100%"
-      size="mini"
+      size="small"
+      stripe
     >
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column label="标题" prop="title"></el-table-column>
@@ -205,7 +206,7 @@ export default {
       // 总条数
       totalCount: 100,
       // 默认每页显示的条数
-      PageSize: 10
+      PageSize: 9
     };
   },
   methods: {
