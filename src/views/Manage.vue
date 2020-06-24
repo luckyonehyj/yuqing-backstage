@@ -6,7 +6,7 @@
         <div class="title">{{title}}</div>
       </el-col>
     </el-row>
-    <!-- 查询 -->
+    <!-- 查询板块 -->
     <el-form ref="form" :model="form" label-width="100px" style="display:flex" size="mini">
       <!-- 按板块查询 -->
       <el-form-item label="按板块查询:" style="margin-left: -10px">
@@ -25,10 +25,10 @@
       <el-form-item label="按日期查询:">
         <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
       </el-form-item>
-      <!-- 按钮 -->
+      <!-- 查询/取消 按钮 -->
       <el-form-item class="submmit">
-        <el-button type="primary" style="margin: 0 5px 0 -80px" @click="onSearch('form')">查询</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" style="margin: 0 5px 0 -80px" @click="handleSearch('form')">查询</el-button>
+        <el-button @click="handleCancel('form')">取消</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -46,14 +46,6 @@
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="brief" label="简介"></el-table-column>
       <el-table-column prop="operation" label="编辑/删除" width="130">
-        <!-- <el-button
-          type="primary"
-          icon="el-icon-edit"
-          circle
-          size="mini"
-          @click="onEdit(scope.$index)"
-        ></el-button>
-        <el-button type="info" icon="el-icon-delete" circle @click="onDelete" size="mini"></el-button>-->
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -91,13 +83,15 @@ import bus from "@/utils/bus";
 export default {
   data() {
     return {
-      // 查询表单
+      // 大标题
       title: "管理舆情",
+      // 表单数据
       form: {
         plate: "",
         title: "",
         date: ""
       },
+      // 表格数据
       tableData: [
         {
           id: "0",
@@ -266,35 +260,45 @@ export default {
     Edit
   },
   methods: {
-    // getData() {
-    //   this.$http.get("").then(
-    //     function(res) {
-    //       console.log(reponse);
-    //       this.tableData = data.data.body;
-    //       this.totalCount = data.data.body.length;
-    //     },
-    //     function() {
-    //       console.log("请求失败处理");
-    //     }
-    //   );
-    // },'
-    // onSearch(formName) {
-    //   event.preventDefault();
-    //   let formData = JSON.stringify(this.form);
-    //   this.$http.get("", formData).then(
-    //     res => {
-    //       console.log(res);
-    //     },
-    //     err => {
-    //       console.log(err);
-    //     }
-    //   );
-    //   console.dir(this.form);
-    // },
+    //获取所有舆情
+    getData() {
+      this.$http.get("").then(
+        res => {
+          console.log(res);
+          // this.tableData = data.data.body;
+          // this.totalCount = data.data.body.length;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //查询舆情
+    handleSearch(formName) {
+      event.preventDefault();
+      let formData = JSON.stringify(formName);
+      this.$http.get("", formData).then(
+        res => {
+          console.log(res);
+          this.$refs[formName].resetFields();
+        },
+        err => {
+          console.log(err);
+          this.$refs[formName].resetFields();
+        }
+      );
+      console.dir(this.form);
+    },
+    //取消查询，清空表单
+    handleCancel(formName) {
+      this.$refs[formName].resetFields();
+    },
+    //编辑舆情
     handleEdit(index, row) {
       bus.$emit("edit", row); //给编辑组件传值
       bus.$emit("showEditDialog", true); //显示编辑页面
     },
+    //删除舆情
     handleDelete(index, row) {
       this.$confirm("此操作将永久删除该舆情, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -302,11 +306,22 @@ export default {
         type: "warning"
       })
         .then(() => {
-          console.log(index, row);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+          this.$http.get("", row.id).then(
+            res => {
+              console.log(res);
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            },
+            err => {
+              console.log(err);
+              this.$message({
+                type: "warning",
+                message: "删除失败!"
+              });
+            }
+          );
         })
         .catch(() => {
           this.$message({
@@ -317,11 +332,7 @@ export default {
     }
   },
   mounted() {
-    //   this.getData();
-    bus.$on("showEditDialog", e => {
-      this.dialogTableVisible = e;
-      console.log(e);
-    });
+    this.getData();
   }
 };
 </script>

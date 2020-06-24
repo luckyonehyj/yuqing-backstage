@@ -1,14 +1,18 @@
 <template>
   <div id="create">
+    <!-- 页面大标题 -->
     <el-row>
       <el-col :span="24">
         <div v-if="title" class="title">{{title}}</div>
       </el-col>
     </el-row>
+    <!-- 表单 -->
     <el-form ref="form" :model="form" label-width="80px" :rules="rules" size="mini">
+      <!-- 标题填写 -->
       <el-form-item label="文章标题" prop="title">
         <el-input v-model="form.title" style="width:45.8%;" placeholder="请输入文章标题"></el-input>
       </el-form-item>
+      <!-- 板块选择-->
       <el-form-item label="选择板块" prop="plate">
         <el-select v-model="form.plate" placeholder="请选择板块">
           <el-option label="零陵舆情" value="yuqing"></el-option>
@@ -17,21 +21,23 @@
           <el-option label="社会热点" value="redian"></el-option>
         </el-select>
       </el-form-item>
+      <!-- 日期选择 -->
       <el-form-item label="选择日期" prop="date">
         <el-col :span="11">
           <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 200px;"></el-date-picker>
         </el-col>
       </el-form-item>
+      <!-- 简介填写 -->
       <el-form-item label="填写简介" prop="brief">
         <el-input type="textarea" v-model="form.brief" placeholder="请输入文章简介"></el-input>
       </el-form-item>
-
+      <!-- 文章填写 -->
       <el-form-item label="填写内容" prop="content">
         <el-card>
           <quill-editor v-model="form.content" ref="myQuillEditor" style="height: 500px;"></quill-editor>
         </el-card>
       </el-form-item>
-
+      <!-- 完成/重置按钮 -->
       <el-form-item>
         <el-button type="primary" @click="submitForm('form')">完成</el-button>
         <el-button @click="resetForm('form')">重置</el-button>
@@ -41,6 +47,7 @@
 </template>
 
 <script>
+//引入富文本编辑框
 import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
@@ -48,7 +55,9 @@ import "quill/dist/quill.bubble.css";
 export default {
   data() {
     return {
+      //大标题
       title: "创建舆情",
+      // 表单数据
       form: {
         title: "",
         plate: "",
@@ -56,7 +65,7 @@ export default {
         brief: "",
         content: null
       },
-
+      // 表单验证规则
       rules: {
         title: [
           { required: true, message: "请输入文章标题", trigger: "blur" },
@@ -84,6 +93,7 @@ export default {
     quillEditor
   },
   methods: {
+    // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -121,6 +131,7 @@ export default {
         }
       });
     },
+    // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
