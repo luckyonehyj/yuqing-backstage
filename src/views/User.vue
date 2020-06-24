@@ -1,3 +1,4 @@
+//用户管理页面
 <template>
   <div id="user">
     <el-row>
@@ -16,6 +17,4 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
-
-</style>
+<style lang="stylus" scoped></style>

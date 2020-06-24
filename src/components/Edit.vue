@@ -1,7 +1,7 @@
 <template>
   <div id="create">
     <!-- 编辑对话框 -->
-    <el-dialog title="编辑" :visible.sync="dialogVisible" width="85%" top="0">
+    <el-dialog title="编辑舆情" :visible.sync="dialogVisible" width="85%" top="0">
       <!-- 表单 -->
       <el-form ref="form" :model="form" label-width="80px" :rules="rules" size="small">
         <!-- 标题 -->
@@ -67,7 +67,7 @@ export default {
       rules: {
         title: [
           { required: true, message: "请输入文章标题", trigger: "blur" },
-          { min: 5, max: 30, message: "长度在 5到 30 个字符", trigger: "blur" }
+          { min: 1, max: 30, message: "长度在 5到 30 个字符", trigger: "blur" }
         ],
         plate: [
           { required: true, message: "请选择舆情板块", trigger: "change" }
@@ -139,7 +139,7 @@ export default {
   },
   created() {
     //   监听编辑按钮点击事件，给编辑框传入数据
-    bus.$on("edit", e => {
+    bus.$on("editYQ", e => {
       this.form = e;
     });
     //  监听编辑按钮点击事件，显示编辑框

@@ -1,3 +1,4 @@
+//专报概述页面
 <template>
   <div id="home">
     <el-row>
@@ -16,6 +17,4 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
-
-</style>
+<style lang="stylus" scoped></style>

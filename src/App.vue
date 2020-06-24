@@ -17,7 +17,7 @@
         <span slot="label">
           <i class="el-icon-s-management"></i> 管理专报
         </span>
-        <manage :title="activeName"></manage>
+        <router-view></router-view>
       </el-tab-pane>
       <el-tab-pane label="用户管理" name="用户管理">
         <span slot="label">
@@ -31,7 +31,7 @@
 <script>
 import Home from "@/views/Home";
 import Create from "@/views/Create";
-import Manage from "@/views/Manage";
+
 import User from "@/views/User";
 export default {
   data() {
@@ -42,13 +42,7 @@ export default {
   components: {
     Home,
     Create,
-    Manage,
     User
-  },
-  methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    }
   }
 };
 </script>

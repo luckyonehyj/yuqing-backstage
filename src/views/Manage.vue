@@ -1,50 +1,34 @@
 <template>
   <div id="manage">
-    <!-- 页面大标题 -->
+    <!-- "专报管理"大标题 -->
     <el-row>
       <el-col :span="24">
         <div class="title">{{title}}</div>
       </el-col>
     </el-row>
-    <!-- 查询板块 -->
-    <el-form ref="form" :model="form" label-width="100px" style="display:flex" size="mini">
-      <!-- 按板块查询 -->
-      <el-form-item label="按板块查询:" style="margin-left: -10px" prop="plate">
-        <el-select v-model="form.plate" placeholder="请选择板块">
-          <el-option label="零陵舆情" value="yuqing"></el-option>
-          <el-option label="敏感信息" value="mingan"></el-option>
-          <el-option label="贴文信息" value="tiewen"></el-option>
-          <el-option label="社会热点" value="redian"></el-option>
-        </el-select>
-      </el-form-item>
-      <!-- 按标题查询 -->
-      <el-form-item label="按标题查询:" prop="title">
-        <el-input v-model="form.title" placeholder="请输入关键字" class="search"></el-input>
-      </el-form-item>
-      <!-- 按日期查询 -->
-      <el-form-item label="按日期查询:" prop="date">
+    <!-- 专报查询板块 -->
+    <el-form ref="form" :model="form" label-width="100px" style="display:flex" size="small">
+      <!-- 按日期查询专报 -->
+      <el-form-item label="按日期查询:" prop="date" style="margin-left: -10px">
         <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
       </el-form-item>
-      <!-- 查询/取消 按钮 -->
       <el-form-item class="submmit">
         <el-button type="primary" style="margin: 0 5px 0 -80px" @click="handleSearch('form')">查询</el-button>
         <el-button @click="resetForm('form')">取消</el-button>
       </el-form-item>
     </el-form>
-    <!-- 表格 -->
+    <!-- 专报表格 -->
     <el-table
       :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-      style="width: 100% "
-      row-key="id"
-      stripe
-      :default-sort="{prop: 'date', order: 'descending'}"
+      style="width: 100%"
       size="mini"
-      ref="table"
     >
-      <el-table-column type="index"></el-table-column>
-      <el-table-column prop="date" label="日期" width="130" sortable></el-table-column>
-      <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column prop="brief" label="简介"></el-table-column>
+      <el-table-column type="index" width="50"></el-table-column>
+      <el-table-column label="标题" prop="title"></el-table-column>
+      <el-table-column label="零陵舆情" prop="yuqing"></el-table-column>
+      <el-table-column label="敏感信息" prop="mingan"></el-table-column>
+      <el-table-column label="帖文信息" prop="tiewen"></el-table-column>
+      <el-table-column label="社会热点" prop="redian"></el-table-column>
       <el-table-column prop="operation" label="编辑/删除" width="130">
         <template slot-scope="scope">
           <el-button
@@ -64,207 +48,173 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 分页 -->
+
+    <!-- 分页-->
     <el-pagination
       :current-page="currentPage"
       :page-size="PageSize"
       layout="total,  prev, pager, next, jumper"
       :total="totalCount"
+      @current-change="handleCurrentChange"
       small
     ></el-pagination>
-    <!-- 编辑框 -->
-    <edit></edit>
   </div>
 </template>
   
 <script>
-import Edit from "@/components/Edit";
-import bus from "@/utils/bus";
 export default {
   data() {
     return {
       // 大标题
-      title: "管理舆情",
-      // 表单数据
+      title: "管理专报",
+      //专报查询关键字
       form: {
-        plate: "",
-        title: "",
         date: ""
       },
-      // 表格数据
+      //专报表格数据
       tableData: [
         {
-          id: "0",
-          date: "2016-05-02",
-          plate: "零陵舆情",
-          title: "aaa王小虎王小虎王小虎王小虎王小",
-          brief:
-            "上海市普陀区金沙江路 1518 弄王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎"
+          id: "12987122",
+          title: "2020/03/03期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "1",
-          date: "2016-05-04",
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1517 弄",
-          plate: "零陵舆情"
+          id: "12987123",
+          title: "2020/03/04期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "2",
-          date: "2016-05-01",
-          title: "王小虎",
-          plate: "零陵舆情",
-
-          brief: "上海市普陀区金沙江路 1519 弄"
+          id: "12987125",
+          title: "2020/03/05期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "3",
-          date: "2016-05-01",
-          title: "王小虎",
-          plate: "零陵舆情",
-
-          brief: "上海市普陀区金沙江路 1519 弄"
+          id: "12987126",
+          title: "2020/03/06期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "4",
-          date: "2016-05-04",
-          title: "王小虎",
-          plate: "零陵舆情",
-
-          brief: "上海市普陀区金沙江路 1517 弄"
+          id: "12987126",
+          title: "2020/03/07期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "5",
-
-          date: "2016-05-01",
-          title: "王小虎",
-          plate: "零陵舆情",
-
-          brief: "上海市普陀区金沙江路 1519 弄"
+          id: "12987126",
+          title: "2020/03/08期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "6",
-
-          date: "2016-05-01",
-          title: "王小虎",
-          plate: "零陵舆情",
-
-          brief: "上海市普陀区金沙江路 1519 弄"
-        },
-
-        {
-          id: "7",
-
-          date: "2016-05-01",
-          title: "王小虎",
-          plate: "零陵舆情",
-
-          brief: "上海市普陀区金沙江路 1519 弄"
+          id: "12987126",
+          title: "2020/03/09期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "8",
-
-          date: "2016-05-03",
-          title: "王小虎",
-          plate: "零陵舆情",
-
-          brief: "上海市普陀区金沙江路 1516 弄"
+          id: "12987126",
+          title: "2020/03/10期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "9",
-          plate: "零陵舆情",
-
-          date: "2016-05-02",
-          title:
-            "王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎",
-          brief:
-            "上海市普陀区金沙江路 1518 弄王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎王小虎"
+          id: "12987126",
+          title: "2020/03/11期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "10",
-
-          date: "2016-05-04",
-          plate: "零陵舆情",
-
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1517 弄"
+          id: "12987126",
+          title: "2020/03/12期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "11",
-          plate: "零陵舆情",
-
-          date: "2016-05-01",
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1519 弄"
+          id: "12987126",
+          title: "2020/03/13期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "12",
-          plate: "零陵舆情",
-
-          date: "2016-05-01",
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1519 弄"
+          id: "12987126",
+          title: "2020/03/14期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "13",
-          plate: "零陵舆情",
-
-          date: "2016-05-04",
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1517 弄"
+          id: "12987126",
+          title: "2020/03/15期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         },
         {
-          id: "14",
-          plate: "零陵舆情",
-
-          date: "2016-05-01",
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          id: "15",
-          plate: "零陵舆情",
-
-          date: "2016-05-01",
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          id: "16",
-          plate: "零陵舆情",
-
-          date: "2016-05-01",
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          id: "17",
-          plate: "零陵舆情",
-
-          date: "2016-05-03",
-          title: "王小虎",
-          brief: "上海市普陀区金沙江路 1516 弄"
+          id: "12987126",
+          title: "2020/03/10期专报",
+          date: "2020-01-01",
+          yuqing: 1,
+          mingan: 2,
+          tiewen: 3,
+          redian: 4
         }
       ],
       // 默认显示第几页
       currentPage: 1,
-      // 总条数，根据接口获取数据长度(注意：这里不能为空)
+      // 总条数
       totalCount: 100,
-      // 个数选择器（可修改）
-      // 默认每页显示的条数（可修改）
+      // 默认每页显示的条数
       PageSize: 10
-      // 编辑对话框是否可见
     };
   },
-  components: {
-    Edit
-  },
   methods: {
-    //获取所有舆情
+    //获取所有专报
     getData() {
-      this.$http.get("").then(
+      this.$http.get("findDataTotal.php").then(
         res => {
           console.log(res);
-          // this.tableData = data.data.body;
+          // this.tableData = res.body;
           // this.totalCount = data.data.body.length;
         },
         err => {
@@ -272,7 +222,11 @@ export default {
         }
       );
     },
-    //查询舆情
+    //分页跳转
+    handleCurrentChange(currentPage) {
+      this.currentPage = currentPage;
+    },
+    //查询专报
     handleSearch(formName) {
       event.preventDefault();
       let formData = JSON.stringify(formName);
@@ -294,8 +248,8 @@ export default {
     },
     //编辑舆情
     handleEdit(index, row) {
-      bus.$emit("edit", row); //给编辑组件传值
-      bus.$emit("showEditDialog", true); //显示编辑页面
+      this.$router.push({ path: "/yuqing" });
+      this.$store.commit("changeZB", row);
     },
     //删除舆情
     handleDelete(index, row) {
@@ -329,15 +283,6 @@ export default {
           });
         });
     }
-  },
-  mounted() {
-    this.getData();
-    bus.$on("updateTable", e => {
-      let obj = JSON.parse(e);
-      let id = obj.id;
-      let index = this.tableData.findIndex(x => x.id === id);
-      this.$set(this.tableData, index, obj);
-    });
   }
 };
 </script>

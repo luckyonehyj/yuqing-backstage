@@ -1,3 +1,4 @@
+// 舆情创建页面
 <template>
   <div id="create">
     <!-- 页面大标题 -->
@@ -7,7 +8,7 @@
       </el-col>
     </el-row>
     <!-- 表单 -->
-    <el-form ref="form" :model="form" label-width="80px" :rules="rules" size="mini">
+    <el-form ref="form" :model="form" label-width="80px" :rules="rules" size="small">
       <!-- 标题填写 -->
       <el-form-item label="文章标题" prop="title">
         <el-input v-model="form.title" style="width:45.8%;" placeholder="请输入文章标题"></el-input>
