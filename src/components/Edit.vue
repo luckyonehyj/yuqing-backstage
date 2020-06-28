@@ -1,9 +1,9 @@
 <template>
   <div id="create">
     <!-- 编辑对话框 -->
-    <el-dialog title="编辑舆情" :visible.sync="dialogVisible" width="85%" top="0">
+    <el-dialog title="编辑舆情" :visible.sync="dialogVisible" width="85%" top="2vh" center="true">
       <!-- 表单 -->
-      <el-form ref="form" :model="form" label-width="80px" :rules="rules" size="small">
+      <el-form ref="form" :model="form" label-width="80px" :rules="rules" size="mini">
         <!-- 标题 -->
         <el-form-item label="文章标题" prop="title">
           <el-input v-model="form.title" style="width:45.8%;" placeholder="请输入文章标题"></el-input>
@@ -155,10 +155,14 @@ export default {
     height: 1.2rem;
   }
 
-  .el-card__body {
-    height: 5rem;
-    padding: 0;
-    overflow: auto;
+  .el-dialog {
+    height: 95vh;
+
+    .el-card__body {
+      height: 4.5rem;
+      padding: 0;
+      overflow: auto;
+    }
   }
 }
 </style>
