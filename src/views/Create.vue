@@ -8,10 +8,10 @@
       </el-col>
     </el-row>
     <!-- 表单 -->
-    <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+    <el-form ref="form" :model="form" label-width="90px" :rules="rules">
       <!-- 标题填写 -->
       <el-form-item label="文章标题" prop="title">
-        <el-input v-model="form.title" style="width:45.8%;" placeholder="请输入文章标题"></el-input>
+        <el-input v-model="form.title" style="width:48%;" placeholder="请输入文章标题"></el-input>
       </el-form-item>
       <!-- 板块选择-->
       <el-form-item label="选择板块" prop="plate">
@@ -27,10 +27,6 @@
         <el-col :span="11">
           <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 200px;"></el-date-picker>
         </el-col>
-      </el-form-item>
-      <!-- 简介填写 -->
-      <el-form-item label="填写简介" prop="brief">
-        <el-input type="textarea" v-model="form.brief" placeholder="请输入文章简介"></el-input>
       </el-form-item>
       <!-- 文章填写 -->
       <el-form-item label="填写内容" prop="content">
@@ -63,7 +59,7 @@ export default {
         title: "",
         plate: "",
         date: "",
-        brief: "",
+        // brief: "",
         content: null
       },
       // 表单验证规则
@@ -83,7 +79,6 @@ export default {
             trigger: "change"
           }
         ],
-        brief: [{ required: true, message: "请填写简介", trigger: "blur" }],
         content: [
           { required: true, message: "请填写文章内容", trigger: "blur" }
         ]
@@ -106,7 +101,7 @@ export default {
           })
             .then(() => {
               let formData = JSON.stringify(this.form);
-              this.$http.post("test.php", formData).then(
+              this.$http.post("setData.php", formData).then(
                 res => {
                   console.log(res);
                 },
@@ -140,22 +135,30 @@ export default {
 };
 </script>
 <style lang="stylus">
-.el-tabs__content {
-  .title {
-    height: 20%;
-    box-sizing: border-box;
-    font-size: 0.4rem;
-    padding: 0.266667rem 0 0.45rem;
-  }
+.title {
+  height: 20%;
+  box-sizing: border-box;
+  font-size: 0.45rem;
+  padding: 0.266667rem 0 0.45rem;
+}
 
+.el-table_1_column_1 .cell {
+  padding-left: 0.013333rem !important;
+}
+
+#create {
   .el-textarea__inner {
     height: 1.2rem;
   }
 
   .el-card__body {
-    height: 6.8rem;
+    height: 8.5rem;
     padding: 0;
     overflow: auto;
+  }
+
+  .el-form-item__label {
+    font-size: 0.3rem;
   }
 }
 </style>

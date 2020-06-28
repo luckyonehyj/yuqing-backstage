@@ -1,9 +1,9 @@
 <template>
-  <div id="create">
+  <div id="edit">
     <!-- 编辑对话框 -->
-    <el-dialog title="编辑舆情" :visible.sync="dialogVisible" width="85%" top="2vh" center="true">
+    <el-dialog title="编辑舆情" :visible.sync="dialogVisible" width="85%" top="2vh" :center="true">
       <!-- 表单 -->
-      <el-form ref="form" :model="form" label-width="80px" :rules="rules" size="mini">
+      <el-form ref="form" :model="form" label-width="95px" :rules="rules">
         <!-- 标题 -->
         <el-form-item label="文章标题" prop="title">
           <el-input v-model="form.title" style="width:45.8%;" placeholder="请输入文章标题"></el-input>
@@ -22,10 +22,6 @@
           <el-col :span="11">
             <el-date-picker placeholder="选择日期" v-model="form.date" style="width: 200px;"></el-date-picker>
           </el-col>
-        </el-form-item>
-        <!-- 简介 -->
-        <el-form-item label="填写简介" prop="brief">
-          <el-input type="textarea" v-model="form.brief" placeholder="请输入文章简介"></el-input>
         </el-form-item>
         <!-- 内容 -->
         <el-form-item label="填写内容" prop="content">
@@ -59,7 +55,6 @@ export default {
         title: "",
         plate: "",
         date: "",
-        brief: "",
         content: null
       },
 
@@ -79,7 +74,6 @@ export default {
             trigger: "change"
           }
         ],
-        brief: [{ required: true, message: "请填写简介", trigger: "blur" }],
         content: [
           { required: true, message: "请填写文章内容", trigger: "blur" }
         ]
@@ -150,19 +144,23 @@ export default {
 };
 </script>
 <style lang="stylus">
-.el-tabs__content {
+#edit {
   .el-textarea__inner {
     height: 1.2rem;
   }
 
   .el-dialog {
-    height: 95vh;
+    height: 96vh;
 
     .el-card__body {
-      height: 6.8rem;
+      height: 8rem;
       padding: 0;
       overflow: auto;
     }
+  }
+
+  .el-form-item__label {
+    font-size: 0.3rem !important;
   }
 }
 </style>

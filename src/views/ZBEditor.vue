@@ -10,9 +10,9 @@
         </div>
       </el-col>
     </el-row>
-    <el-form ref="form" :model="form" label-width="100px" style="display:flex" size="mini">
+    <el-form ref="form" :model="form" label-width="100px" style="display:flex">
       <!-- 按板块查询 -->
-      <el-form-item label="按板块查询:" style="margin-left: -10px" prop="plate">
+      <el-form-item label="按板块查询:" prop="plate" style="margin-left: 10px">
         <el-select v-model="form.plate" placeholder="请选择板块">
           <el-option label="零陵舆情" value="yuqing"></el-option>
           <el-option label="敏感信息" value="mingan"></el-option>
@@ -21,14 +21,9 @@
         </el-select>
       </el-form-item>
       <!-- 按标题查询 -->
-      <el-form-item label="按标题查询:" prop="title">
+      <el-form-item label="按标题查询:" prop="title" style="margin-left: 15px">
         <el-input v-model="form.title" placeholder="请输入关键字" class="search"></el-input>
       </el-form-item>
-      <!-- 按日期查询 -->
-      <!-- <el-form-item label="按日期查询:" prop="date">
-        <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
-      </el-form-item>-->
-      <!-- 查询/取消 按钮 -->
       <el-form-item class="submmit">
         <el-button type="primary" style="margin: 0 5px 0 -80px" @click="handleSearch('form')">查询</el-button>
         <el-button @click="resetForm('form')">取消</el-button>
@@ -41,24 +36,22 @@
       row-key="id"
       stripe
       :default-sort="{prop: 'date', order: 'descending'}"
-      size="small"
       ref="table"
     >
-      <el-table-column type="index" width="60"></el-table-column>
-      <!-- <el-table-column prop="date" label="日期" width="130" sortable></el-table-column> -->
+      <el-table-column type="index" width="80" align="center"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column prop="brief" label="简介"></el-table-column>
-      <el-table-column prop="operation" label="编辑/删除" width="130">
+      <el-table-column prop="plate" label="板块" width="130"></el-table-column>
+      <el-table-column prop="operation" label="编辑/删除" width="160" align="center">
         <template slot-scope="scope">
           <el-button
-            size="mini"
+            size="small"
             @click="handleEdit(scope.$index, scope.row)"
             circle
             type="primary"
             icon="el-icon-edit"
           ></el-button>
           <el-button
-            size="mini"
+            size="small"
             type="info"
             @click="handleDelete(scope.$index, scope.row)"
             circle
@@ -73,7 +66,6 @@
       layout="total,  prev, pager, next, jumper"
       :total="totalCount"
       @current-change="handleCurrentChange"
-      small
     ></el-pagination>
     <!-- 编辑框 -->
     <edit></edit>
@@ -198,7 +190,7 @@ export default {
       // 总条数
       totalCount: 100,
       // 默认每页显示的条数
-      PageSize: 12
+      PageSize: 10
     };
   },
   computed: {
@@ -302,26 +294,32 @@ export default {
 </script>
 
 <style lang="stylus">
-.title {
-  position: relative;
+#zbedit {
+  .title {
+    position: relative;
 
-  #title {
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%);
+    #title {
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
   }
-}
 
-.el-table .cell {
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
+  .el-table .cell {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
 
-.el-pagination {
-  display: flex;
-  justify-content: center;
-  margin: 0.2rem 0 0 -0.773333rem;
-  0.013333rem;
+  .el-pagination {
+    display: flex;
+    justify-content: center;
+    margin: 0.2rem 0 0 -0.773333rem;
+    0.013333rem;
+  }
+
+  .el-form-item__label {
+    font-size: 0.3rem;
+  }
 }
 </style>

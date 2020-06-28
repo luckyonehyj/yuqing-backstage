@@ -36,7 +36,7 @@ import User from "@/views/User";
 export default {
   data() {
     return {
-      activeName: "管理专报"
+      activeName: "创建专报"
     };
   },
   components: {
@@ -53,6 +53,7 @@ export default {
   box-sizing: border-box;
 
   .el-tabs__header {
+    width: 16vh !important;
     height: 100vh !important;
 
     .el-tabs__nav-wrap {
@@ -63,15 +64,18 @@ export default {
         height: 100%;
 
         .el-tabs__item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           height: 25%;
-          line-height: 25vh;
           font-weight: 700;
+          font-size: 0.3rem;
           color: #fff !important;
         }
 
         .is-active {
-          background-color: #1E90FF !important;
-          border-color: #1E90FF !important;
+          background-color: #409EFF !important;
+          border-color: #409EFF !important;
         }
       }
     }

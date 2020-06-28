@@ -9,8 +9,14 @@
     <!-- 专报查询板块 -->
     <el-form ref="form" :model="form" label-width="100px" style="display:flex">
       <!-- 按日期查询专报 -->
-      <el-form-item label="按日期查询:" prop="date" style="margin-left: -10px">
-        <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
+      <el-form-item label="按日期查询:" prop="date">
+        <el-date-picker
+          v-model="form.date"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item class="submmit">
         <el-button type="primary" style="margin: 0 5px 0 -80px" @click="handleSearch('form')">查询</el-button>
@@ -18,29 +24,24 @@
       </el-form-item>
     </el-form>
     <!-- 专报表格 -->
-    <el-table
-      :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-      style="width: 100%"
-      size="small"
-      stripe
-    >
-      <el-table-column type="index" width="50"></el-table-column>
+    <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)" stripe>
+      <el-table-column type="index" align="center" width="70"></el-table-column>
       <el-table-column label="标题" prop="title"></el-table-column>
-      <el-table-column label="零陵舆情" prop="yuqing"></el-table-column>
-      <el-table-column label="敏感信息" prop="mingan"></el-table-column>
-      <el-table-column label="帖文信息" prop="tiewen"></el-table-column>
-      <el-table-column label="社会热点" prop="redian"></el-table-column>
-      <el-table-column prop="operation" label="编辑/删除" width="130">
+      <el-table-column label="零陵舆情" prop="yuqing" align="center"></el-table-column>
+      <el-table-column label="敏感信息" prop="mingan" align="center"></el-table-column>
+      <el-table-column label="帖文信息" prop="tiewen" align="center"></el-table-column>
+      <el-table-column label="社会热点" prop="redian" align="center"></el-table-column>
+      <el-table-column prop="operation" label="编辑/删除" width="130" align="center">
         <template slot-scope="scope">
           <el-button
-            size="mini"
+            size="small"
             @click="handleEdit(scope.$index, scope.row)"
             circle
             type="primary"
             icon="el-icon-edit"
           ></el-button>
           <el-button
-            size="mini"
+            size="small"
             type="info"
             @click="handleDelete(scope.$index, scope.row)"
             circle
@@ -57,7 +58,6 @@
       layout="total,  prev, pager, next, jumper"
       :total="totalCount"
       @current-change="handleCurrentChange"
-      small
     ></el-pagination>
   </div>
 </template>
@@ -206,17 +206,17 @@ export default {
       // 总条数
       totalCount: 100,
       // 默认每页显示的条数
-      PageSize: 12
+      PageSize: 10
     };
   },
   methods: {
     //获取所有专报
     getData() {
-      this.$http.get("findDataTotal.php").then(
+      this.$http.get("").then(
         res => {
           console.log(res);
-          // this.tableData = res.body;
-          // this.totalCount = data.data.body.length;
+          this.tableData = res.body;
+          this.totalCount = res.body.length;
         },
         err => {
           console.log(err);
@@ -284,21 +284,30 @@ export default {
           });
         });
     }
+  },
+  mounted() {
+    this.getData();
   }
 };
 </script>
 
 <style lang="stylus">
-.el-table .cell {
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
+#manage {
+  .el-table .cell {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
 
-.el-pagination {
-  display: flex;
-  justify-content: center;
-  margin: 0.2rem 0 0 -0.773333rem;
-  0.013333rem;
+  .el-pagination {
+    display: flex;
+    justify-content: center;
+    margin: 0.2rem 0 0 -0.773333rem;
+    0.013333rem;
+  }
+
+  .el-form-item__label {
+    font-size: 0.3rem !important;
+  }
 }
 </style>
