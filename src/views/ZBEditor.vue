@@ -198,7 +198,7 @@ export default {
       // 总条数
       totalCount: 100,
       // 默认每页显示的条数
-      PageSize: 9
+      PageSize: 12
     };
   },
   computed: {

@@ -8,7 +8,7 @@
       </el-col>
     </el-row>
     <!-- 表单 -->
-    <el-form ref="form" :model="form" label-width="80px" :rules="rules" size="small">
+    <el-form ref="form" :model="form" label-width="80px" :rules="rules">
       <!-- 标题填写 -->
       <el-form-item label="文章标题" prop="title">
         <el-input v-model="form.title" style="width:45.8%;" placeholder="请输入文章标题"></el-input>

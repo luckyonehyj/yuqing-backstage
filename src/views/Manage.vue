@@ -7,7 +7,7 @@
       </el-col>
     </el-row>
     <!-- 专报查询板块 -->
-    <el-form ref="form" :model="form" label-width="100px" style="display:flex" size="small">
+    <el-form ref="form" :model="form" label-width="100px" style="display:flex">
       <!-- 按日期查询专报 -->
       <el-form-item label="按日期查询:" prop="date" style="margin-left: -10px">
         <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
@@ -206,7 +206,7 @@ export default {
       // 总条数
       totalCount: 100,
       // 默认每页显示的条数
-      PageSize: 9
+      PageSize: 12
     };
   },
   methods: {

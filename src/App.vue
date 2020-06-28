@@ -9,7 +9,7 @@
       </el-tab-pane>
       <el-tab-pane label="创建专报" name="创建专报">
         <span slot="label">
-          <i class="el-icon-upload"></i> 创建专报
+          <i class="el-icon-upload"></i> 创建舆情
         </span>
         <create :title="activeName"></create>
       </el-tab-pane>
