@@ -153,7 +153,7 @@ export default {
   }
 
   .el-card__body {
-    height: 5rem;
+    height: 6.8rem;
     padding: 0;
     overflow: auto;
   }

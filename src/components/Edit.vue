@@ -159,7 +159,7 @@ export default {
     height: 95vh;
 
     .el-card__body {
-      height: 4.5rem;
+      height: 6.8rem;
       padding: 0;
       overflow: auto;
     }
