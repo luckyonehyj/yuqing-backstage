@@ -16,6 +16,7 @@
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
+          value-format="yyyy-MM-dd"
         ></el-date-picker>
       </el-form-item>
       <el-form-item class="submmit">
@@ -24,10 +25,14 @@
       </el-form-item>
     </el-form>
     <!-- 专报表格 -->
-    <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)" stripe>
+    <el-table
+      :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+      stripe
+      :default-sort="{prop: 'title', order: 'descending'}"
+    >
       <el-table-column type="index" align="center" width="70"></el-table-column>
       <el-table-column label="标题" prop="title"></el-table-column>
-      <el-table-column label="零陵舆情" prop="yuqing" align="center"></el-table-column>
+      <el-table-column label="涉零舆情" prop="yuqing" align="center"></el-table-column>
       <el-table-column label="敏感信息" prop="mingan" align="center"></el-table-column>
       <el-table-column label="帖文信息" prop="tiewen" align="center"></el-table-column>
       <el-table-column label="社会热点" prop="redian" align="center"></el-table-column>
@@ -63,6 +68,7 @@
 </template>
   
 <script>
+import bus from "@/utils/bus";
 export default {
   data() {
     return {
@@ -70,153 +76,29 @@ export default {
       title: "管理专报",
       //专报查询关键字
       form: {
-        date: ""
+        date: []
       },
-      //专报表格数据
-      tableData: [
-        {
-          id: "12987122",
-          title: "2020/03/03期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987123",
-          title: "2020/03/04期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987125",
-          title: "2020/03/05期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/06期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/07期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/08期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/09期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/10期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/11期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/12期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/13期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/14期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/15期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        },
-        {
-          id: "12987126",
-          title: "2020/03/10期专报",
-          date: "2020-01-01",
-          yuqing: 1,
-          mingan: 2,
-          tiewen: 3,
-          redian: 4
-        }
-      ],
+      //专报表格全体数据
+      tableDataTotal: [],
+      //当前表格数据
+      tableData: [],
       // 默认显示第几页
       currentPage: 1,
       // 总条数
       totalCount: 100,
       // 默认每页显示的条数
-      PageSize: 10
+      PageSize: 9
     };
   },
   methods: {
     //获取所有专报
     getData() {
-      this.$http.get("").then(
+      this.$http.get("FindDataTotal.php").then(
         res => {
-          console.log(res);
-          this.tableData = res.body;
-          this.totalCount = res.body.length;
+          const data = res.body;
+          this.tableData = data;
+          this.totalCount = data.length;
+          this.tableDataTotal = data;
         },
         err => {
           console.log(err);
@@ -230,29 +112,33 @@ export default {
     //查询专报
     handleSearch(formName) {
       event.preventDefault();
-      let formData = JSON.stringify(formName);
-      this.$http.get("", formData).then(
-        res => {
-          console.log(res);
-          // this.form = res.
-          this.$refs[formName].resetFields();
-        },
-        err => {
-          console.log(err);
-          this.$refs[formName].resetFields();
-        }
-      );
+      console.log(this.form.date);
+      if (this.form.date.length !== 0) {
+        let formData = JSON.stringify(this.form);
+        this.$http.post("FindData.php", formData).then(
+          res => {
+            this.tableData = res.body;
+            this.$refs[formName].resetFields();
+          },
+          err => {
+            console.log(err);
+            this.$refs[formName].resetFields();
+          }
+        );
+      }
+      this.tableData = this.tableDataTotal;
     },
     //取消查询，清空表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.tableData = this.tableDataTotal;
     },
-    //编辑舆情
+    //编辑专报
     handleEdit(index, row) {
       this.$router.push({ path: "/yuqing" });
-      this.$store.commit("changeZB", row);
+      this.$store.commit("changeZB", row.id);
     },
-    //删除舆情
+    //删除专报
     handleDelete(index, row) {
       this.$confirm("此操作将永久删除该舆情, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -260,9 +146,10 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$http.get("", row.id).then(
-            res => {
-              console.log(res);
+          this.$http.post("DeleteData.php", row.id).then(
+            () => {
+              const data = this.tableData.filter(item => item.id !== row.id);
+              this.tableData = data;
               this.$message({
                 type: "success",
                 message: "删除成功!"
@@ -287,6 +174,10 @@ export default {
   },
   mounted() {
     this.getData();
+    bus.$on("addYuqing", () => {
+      console.log("get data");
+      this.getData();
+    });
   }
 };
 </script>
@@ -302,7 +193,7 @@ export default {
   .el-pagination {
     display: flex;
     justify-content: center;
-    margin: 0.2rem 0 0 -0.773333rem;
+    margin: 0.5rem 0 0 -0.773333rem;
     0.013333rem;
   }
 

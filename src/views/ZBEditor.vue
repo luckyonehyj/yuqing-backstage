@@ -10,11 +10,11 @@
         </div>
       </el-col>
     </el-row>
-    <el-form ref="form" :model="form" label-width="100px" style="display:flex">
+    <el-form ref="form" :model="form" label-width="100px" style="display:flex ">
       <!-- 按板块查询 -->
       <el-form-item label="按板块查询:" prop="plate" style="margin-left: 10px">
         <el-select v-model="form.plate" placeholder="请选择板块">
-          <el-option label="零陵舆情" value="yuqing"></el-option>
+          <el-option label="涉零舆情" value="yuqing"></el-option>
           <el-option label="敏感信息" value="mingan"></el-option>
           <el-option label="贴文信息" value="tiewen"></el-option>
           <el-option label="社会热点" value="redian"></el-option>
@@ -82,115 +82,20 @@ export default {
       title: "",
       // 舆情查询关键字
       form: {
+        id: "",
         plate: "",
         title: ""
-        // date: ""
       },
-      //舆情表格数据
-      tableData: [
-        {
-          id: "12",
-          date: "2016-05-02",
-          title: "12345ddddddddddddddddddddddddddddddddddddddddddddddd",
-          plate: "零陵舆情",
-          brief: "上海市普陀区金沙江路 1518 弄ddddddddddddddddddddddddddd",
-          content: "dddddd"
-        },
-        {
-          id: "23",
-          date: "2016-05-04",
-          title: "23456",
-          plate: "敏感信息",
-          brief: "上海市普陀区金沙江路 1517 弄",
-          content: "dddddd"
-        },
-        {
-          id: "34",
-          date: "2016-05-01",
-          title: "34567",
-          plate: "帖文信息",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          id: "45",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          id: "56",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          id: "67",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          id: "78",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          id: "89",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          id: "90",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          id: "91",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          id: "92",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          id: "93",
-          date: "2016-05-03",
-          title: "45678",
-          plate: "社会热点",
-          content: "dddddd",
-          brief: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      //当前舆情表格数据
+      tableData: [],
+      //全体舆情表格数据
+      tableDataTotal: [],
       // 默认显示第几页
       currentPage: 1,
       // 总条数
       totalCount: 100,
       // 默认每页显示的条数
-      PageSize: 10
+      PageSize: 9
     };
   },
   computed: {
@@ -203,12 +108,14 @@ export default {
   },
   methods: {
     //获取所有舆情
+
     getData() {
-      this.$http.get("").then(
+      this.$http.post("FindDataId.php", this.currentZB).then(
         res => {
-          console.log(res);
-          // this.tableData = res.body;
-          // this.totalCount = data.data.body.length;
+          const data = res.body;
+          this.tableData = data;
+          this.totalCount = data.length;
+          this.tableDataTotal = data;
         },
         err => {
           console.log(err);
@@ -222,12 +129,11 @@ export default {
     //查询舆情
     handleSearch(formName) {
       event.preventDefault();
-      let formData = JSON.stringify(formName);
-      this.$http.get("", formData).then(
+      this.form.id = this.currentZB;
+      let formData = JSON.stringify(this.form);
+      this.$http.post("FindDataContent.php", formData).then(
         res => {
-          console.log(res);
-          // this.form = res.
-          this.$refs[formName].resetFields();
+          this.tableData = res.body;
         },
         err => {
           console.log(err);
@@ -238,6 +144,7 @@ export default {
     //取消查询，清空表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.tableData = this.tableDataTotal;
     },
     //编辑舆情
     handleEdit(index, row) {
@@ -252,9 +159,9 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$http.get("", row.id).then(
-            res => {
-              console.log(res);
+          this.$http.post("DeleteDataContent.php", JSON.stringify(row)).then(
+            () => {
+              this.getData();
               this.$message({
                 type: "success",
                 message: "删除成功!"
@@ -283,11 +190,8 @@ export default {
   },
   mounted() {
     this.getData();
-    bus.$on("updateTable", e => {
-      let obj = JSON.parse(e);
-      let id = obj.id;
-      let index = this.tableData.findIndex(x => x.id === id);
-      this.$set(this.tableData, index, obj);
+    bus.$on("updateTable", () => {
+      this.getData();
     });
   }
 };
@@ -314,7 +218,7 @@ export default {
   .el-pagination {
     display: flex;
     justify-content: center;
-    margin: 0.2rem 0 0 -0.773333rem;
+    margin: 0.5rem 0 0 -0.773333rem;
     0.013333rem;
   }
 

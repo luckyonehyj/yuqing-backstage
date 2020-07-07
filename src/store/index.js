@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        currentZB: {}
+        currentZB: ""
     },
     mutations: {
         changeZB(state, zb) {

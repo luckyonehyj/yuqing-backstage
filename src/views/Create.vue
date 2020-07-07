@@ -16,7 +16,7 @@
       <!-- 板块选择-->
       <el-form-item label="选择板块" prop="plate">
         <el-select v-model="form.plate" placeholder="请选择板块">
-          <el-option label="零陵舆情" value="yuqing"></el-option>
+          <el-option label="涉零舆情" value="yuqing"></el-option>
           <el-option label="敏感信息" value="mingan"></el-option>
           <el-option label="贴文信息" value="tiewen"></el-option>
           <el-option label="社会热点" value="redian"></el-option>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import bus from "@/utils/bus";
 //引入富文本编辑框
 import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
@@ -91,6 +92,7 @@ export default {
   methods: {
     // 提交表单
     submitForm(formName) {
+      console.log(this.form.date);
       this.$refs[formName].validate(valid => {
         if (valid) {
           event.preventDefault();
@@ -101,12 +103,17 @@ export default {
           })
             .then(() => {
               let formData = JSON.stringify(this.form);
-              this.$http.post("setData.php", formData).then(
+              this.$http.post("SetData.php", formData).then(
                 res => {
                   console.log(res);
+                  bus.$emit("addYuqing");
                 },
                 err => {
                   console.log(err);
+                  this.$message({
+                    type: "warning",
+                    message: "添加失败"
+                  });
                 }
               );
               this.$message({
@@ -139,7 +146,7 @@ export default {
   height: 20%;
   box-sizing: border-box;
   font-size: 0.45rem;
-  padding: 0.266667rem 0 0.45rem;
+  padding: 0.266667rem 0 0.7rem;
 }
 
 .el-table_1_column_1 .cell {

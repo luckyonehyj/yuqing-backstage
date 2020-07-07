@@ -1,7 +1,7 @@
 module.exports = {
     devServer: {
-        proxy: 'http://llqwxb.qicp.vip/'
-            // proxy: 'http://192.168.1.108/'
+        // proxy: 'http://llqwxb.qicp.vip/'
+        proxy: 'http://192.168.1.104/'
     }
 }
 

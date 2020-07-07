@@ -11,7 +11,7 @@
         <!-- 板块 -->
         <el-form-item label="选择板块" prop="plate">
           <el-select v-model="form.plate" placeholder="请选择板块">
-            <el-option label="零陵舆情" value="yuqing"></el-option>
+            <el-option label="涉零舆情" value="yuqing"></el-option>
             <el-option label="敏感信息" value="mingan"></el-option>
             <el-option label="贴文信息" value="tiewen"></el-option>
             <el-option label="社会热点" value="redian"></el-option>
@@ -52,6 +52,7 @@ export default {
       dialogVisible: false,
       // 表单数据
       form: {
+        id: "",
         title: "",
         plate: "",
         date: "",
@@ -98,19 +99,23 @@ export default {
               this.dialogVisible = false;
 
               let formData = JSON.stringify(this.form);
-              this.$http.get("", formData).then(
-                res => {
-                  console.log(res);
-                  bus.$emit("updateTable", formData);
+              this.$http.post("UpdateData.php", formData).then(
+                () => {
+                  bus.$emit("updateTable");
+                  this.$message({
+                    type: "success",
+                    message: "编辑成功"
+                  });
                 },
                 err => {
                   console.log(err);
+                  this.$message({
+                    type: "warning",
+                    message: "编辑失败"
+                  });
                 }
               );
-              this.$message({
-                type: "success",
-                message: "编辑成功"
-              });
+
               this.$refs[formName].resetFields();
             })
             .catch(() => {

@@ -7,7 +7,7 @@
         </span>
         <home :title="activeName"></home>
       </el-tab-pane>
-      <el-tab-pane label="创建专报" name="创建专报">
+      <el-tab-pane label="创建舆情" name="创建舆情">
         <span slot="label">
           <i class="el-icon-upload"></i> 创建舆情
         </span>
@@ -36,7 +36,7 @@ import User from "@/views/User";
 export default {
   data() {
     return {
-      activeName: "创建专报"
+      activeName: "管理专报"
     };
   },
   components: {
