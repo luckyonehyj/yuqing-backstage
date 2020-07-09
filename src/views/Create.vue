@@ -4,7 +4,7 @@
     <!-- 页面大标题 -->
     <el-row>
       <el-col :span="24">
-        <div v-if="title" class="title">{{title}}</div>
+        <div class="title">{{title}}</div>
       </el-col>
     </el-row>
     <!-- 表单 -->
@@ -31,7 +31,13 @@
       <!-- 文章填写 -->
       <el-form-item label="填写内容" prop="content">
         <el-card>
-          <quill-editor v-model="form.content" ref="myQuillEditor" style="height: 500px;"></quill-editor>
+          <quill-editor
+            v-model="form.content"
+            ref="myQuillEditor"
+            style="height: 500px;"
+            :options="editorOption"
+            class="ql-editor"
+          ></quill-editor>
         </el-card>
       </el-form-item>
       <!-- 完成/重置按钮 -->
@@ -67,7 +73,7 @@ export default {
       rules: {
         title: [
           { required: true, message: "请输入文章标题", trigger: "blur" },
-          { min: 5, max: 30, message: "长度在 5到 30 个字符", trigger: "blur" }
+          { min: 5, max: 50, message: "长度在 5到 50 个字符", trigger: "blur" }
         ],
         plate: [
           { required: true, message: "请选择舆情板块", trigger: "change" }
@@ -83,6 +89,21 @@ export default {
         content: [
           { required: true, message: "请填写文章内容", trigger: "blur" }
         ]
+      },
+      // 编辑器配置项
+      editorOption: {
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline", "strike"], // 加粗，斜体，下划线，删除线
+            ["blockquote"], //引用，代码块
+            [{ list: "ordered" }, { list: "bullet" }], // 有序列表，无序列表
+            [{ direction: "rtl" }], // 文字输入方向
+            [{ color: [] }, { background: [] }], // 颜色选择
+            [{ align: [] }], // 居中
+            ["image", "video", "link"],
+            ["clean"] //新添加的工具 // 清除样式
+          ]
+        }
       }
     };
   },
@@ -92,7 +113,6 @@ export default {
   methods: {
     // 提交表单
     submitForm(formName) {
-      console.log(this.form.date);
       this.$refs[formName].validate(valid => {
         if (valid) {
           event.preventDefault();
@@ -107,6 +127,10 @@ export default {
                 res => {
                   console.log(res);
                   bus.$emit("addYuqing");
+                  this.$message({
+                    type: "success",
+                    message: "添加成功"
+                  });
                 },
                 err => {
                   console.log(err);
@@ -116,10 +140,7 @@ export default {
                   });
                 }
               );
-              this.$message({
-                type: "success",
-                message: "添加成功"
-              });
+
               this.$refs[formName].resetFields();
             })
             .catch(() => {
@@ -142,17 +163,6 @@ export default {
 };
 </script>
 <style lang="stylus">
-.title {
-  height: 20%;
-  box-sizing: border-box;
-  font-size: 0.45rem;
-  padding: 0.266667rem 0 0.7rem;
-}
-
-.el-table_1_column_1 .cell {
-  padding-left: 0.013333rem !important;
-}
-
 #create {
   .el-textarea__inner {
     height: 1.2rem;
@@ -162,10 +172,30 @@ export default {
     height: 8.5rem;
     padding: 0;
     overflow: auto;
+
+    .quill-editor {
+      height: 8.5rem !important;
+      overflow: hidden;
+
+      .ql-container {
+        height: 6.5rem;
+      }
+    }
   }
 
   .el-form-item__label {
     font-size: 0.3rem;
   }
+}
+
+.title {
+  height: 20%;
+  box-sizing: border-box;
+  font-size: 0.45rem;
+  padding: 0.266667rem 0 0.7rem;
+}
+
+.el-table_1_column_1 .cell {
+  padding-left: 0.013333rem !important;
 }
 </style>

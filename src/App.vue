@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <el-tabs type="border-card" v-model="activeName" tab-position="left" stretch>
-      <el-tab-pane name="专报概述">
+      <el-tab-pane label="管理专报" name="专报概述">
         <span slot="label">
           <i class="el-icon-menu"></i>专报概述
         </span>
-        <home :title="activeName"></home>
+        <home></home>
       </el-tab-pane>
       <el-tab-pane label="创建舆情" name="创建舆情">
         <span slot="label">
           <i class="el-icon-upload"></i> 创建舆情
         </span>
-        <create :title="activeName"></create>
+        <create></create>
       </el-tab-pane>
       <el-tab-pane label="管理专报" name="管理专报">
         <span slot="label">
@@ -23,7 +23,7 @@
         <span slot="label">
           <i class="el-icon-s-custom"></i> 用户管理
         </span>
-        <user :title="activeName"></user>
+        <user></user>
       </el-tab-pane>
     </el-tabs>
   </div>

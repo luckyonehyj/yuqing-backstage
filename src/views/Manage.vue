@@ -25,13 +25,10 @@
       </el-form-item>
     </el-form>
     <!-- 专报表格 -->
-    <el-table
-      :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-      stripe
-      :default-sort="{prop: 'title', order: 'descending'}"
-    >
+    <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)" stripe>
       <el-table-column type="index" align="center" width="70"></el-table-column>
       <el-table-column label="标题" prop="title"></el-table-column>
+      <!-- <el-table-column prop="date" label="日期" sortable></el-table-column> -->
       <el-table-column label="涉零舆情" prop="yuqing" align="center"></el-table-column>
       <el-table-column label="敏感信息" prop="mingan" align="center"></el-table-column>
       <el-table-column label="帖文信息" prop="tiewen" align="center"></el-table-column>

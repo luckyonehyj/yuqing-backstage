@@ -26,7 +26,13 @@
         <!-- 内容 -->
         <el-form-item label="填写内容" prop="content">
           <el-card>
-            <quill-editor v-model="form.content" ref="myQuillEditor" style="height: 500px;"></quill-editor>
+            <quill-editor
+              v-model="form.content"
+              ref="myQuillEditor"
+              style="height: 400px;"
+              :options="editorOption"
+              class="ql-editor"
+            ></quill-editor>
           </el-card>
         </el-form-item>
         <!-- 按钮 -->
@@ -63,7 +69,7 @@ export default {
       rules: {
         title: [
           { required: true, message: "请输入文章标题", trigger: "blur" },
-          { min: 1, max: 30, message: "长度在 5到 30 个字符", trigger: "blur" }
+          { min: 5, max: 50, message: "长度在 5到 50 个字符", trigger: "blur" }
         ],
         plate: [
           { required: true, message: "请选择舆情板块", trigger: "change" }
@@ -78,6 +84,21 @@ export default {
         content: [
           { required: true, message: "请填写文章内容", trigger: "blur" }
         ]
+      },
+      // 编辑器配置项
+      editorOption: {
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline", "strike"], // 加粗，斜体，下划线，删除线
+            ["blockquote"], //引用，代码块
+            [{ list: "ordered" }, { list: "bullet" }], // 有序列表，无序列表
+            [{ direction: "rtl" }], // 文字输入方向
+            [{ color: [] }, { background: [] }], // 颜色选择
+            [{ align: [] }], // 居中
+            ["image", "video", "link"],
+            ["clean"] //新添加的工具 // 清除样式
+          ]
+        }
       }
     };
   },
@@ -159,9 +180,22 @@ export default {
 
     .el-card__body {
       height: 8rem;
-      padding: 0;
       overflow: auto;
+      padding: 0;
+
+      .quill-editor {
+        height: 8rem !important;
+        overflow: hidden;
+
+        .ql-container {
+          height: 6rem;
+        }
+      }
     }
+  }
+
+  .quill-editor {
+    line-height: normal;
   }
 
   .el-form-item__label {
