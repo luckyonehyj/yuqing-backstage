@@ -11,8 +11,10 @@
 
 <script>
 export default {
-  props: {
-    title: String
+  data() {
+    return {
+      title: "专报概述"
+    };
   }
 };
 </script>
