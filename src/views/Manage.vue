@@ -28,7 +28,6 @@
     <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)" stripe>
       <el-table-column type="index" align="center" width="70"></el-table-column>
       <el-table-column label="标题" prop="title"></el-table-column>
-      <!-- <el-table-column prop="date" label="日期" sortable></el-table-column> -->
       <el-table-column label="涉零舆情" prop="yuqing" align="center"></el-table-column>
       <el-table-column label="敏感信息" prop="mingan" align="center"></el-table-column>
       <el-table-column label="帖文信息" prop="tiewen" align="center"></el-table-column>
@@ -96,6 +95,7 @@ export default {
           this.tableData = data;
           this.totalCount = data.length;
           this.tableDataTotal = data;
+          console.log(data);
         },
         err => {
           console.log(err);
@@ -172,7 +172,6 @@ export default {
   mounted() {
     this.getData();
     bus.$on("addYuqing", () => {
-      console.log("get data");
       this.getData();
     });
   }

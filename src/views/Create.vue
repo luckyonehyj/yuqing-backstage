@@ -28,6 +28,10 @@
           <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 200px;"></el-date-picker>
         </el-col>
       </el-form-item>
+      <!-- 简介填写 -->
+      <el-form-item label="填写简介" prop="introduction">
+        <el-input type="textarea" :rows="2" placeholder="请输入简介" v-model="form.introduction"></el-input>
+      </el-form-item>
       <!-- 文章填写 -->
       <el-form-item label="填写内容" prop="content">
         <el-card>
@@ -66,7 +70,7 @@ export default {
         title: "",
         plate: "",
         date: "",
-        // brief: "",
+        introduction: "",
         content: null
       },
       // 表单验证规则
@@ -86,6 +90,7 @@ export default {
             trigger: "change"
           }
         ],
+        introduction: [{ message: "请填写简介", trigger: "blur" }],
         content: [
           { required: true, message: "请填写文章内容", trigger: "blur" }
         ]
@@ -127,6 +132,7 @@ export default {
                 res => {
                   console.log(res);
                   bus.$emit("addYuqing");
+
                   this.$message({
                     type: "success",
                     message: "添加成功"
@@ -140,7 +146,6 @@ export default {
                   });
                 }
               );
-
               this.$refs[formName].resetFields();
             })
             .catch(() => {
@@ -159,6 +164,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
+  },
+  watch: {
+    form(newForm) {
+      console.log(newForm);
+    }
   }
 };
 </script>
@@ -169,16 +179,16 @@ export default {
   }
 
   .el-card__body {
-    height: 8.5rem;
+    height: 6.8rem;
     padding: 0;
     overflow: auto;
 
     .quill-editor {
-      height: 8.5rem !important;
+      height: 6.8rem !important;
       overflow: hidden;
 
       .ql-container {
-        height: 6.5rem;
+        height: 5rem;
       }
     }
   }

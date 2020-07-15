@@ -35,7 +35,6 @@
       style="width: 100% "
       row-key="id"
       stripe
-      :default-sort="{prop: 'date', order: 'descending'}"
       ref="table"
     >
       <el-table-column type="index" width="80" align="center"></el-table-column>
@@ -112,6 +111,7 @@ export default {
     getData() {
       this.$http.post("FindDataId.php", this.currentZB).then(
         res => {
+          console.log(res.body);
           const data = res.body;
           this.tableData = data;
           this.totalCount = data.length;
@@ -160,12 +160,21 @@ export default {
       })
         .then(() => {
           this.$http.post("DeleteDataContent.php", JSON.stringify(row)).then(
-            () => {
-              this.getData();
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
+            res => {
+              console.log(res.body);
+              if (res.body) {
+                this.$router.go(-1);
+                this.$message({
+                  type: "success",
+                  message: "专报已删除!"
+                });
+              } else {
+                this.getData();
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+              }
             },
             err => {
               console.log(err);

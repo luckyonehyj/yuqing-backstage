@@ -23,6 +23,10 @@
             <el-date-picker placeholder="选择日期" v-model="form.date" style="width: 200px;"></el-date-picker>
           </el-col>
         </el-form-item>
+        <!-- 简介填写 -->
+        <el-form-item label="填写简介" prop="brief">
+          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.introduction"></el-input>
+        </el-form-item>
         <!-- 内容 -->
         <el-form-item label="填写内容" prop="content">
           <el-card>
@@ -31,7 +35,6 @@
               ref="myQuillEditor"
               style="height: 400px;"
               :options="editorOption"
-              class="ql-editor"
             ></quill-editor>
           </el-card>
         </el-form-item>
@@ -62,6 +65,7 @@ export default {
         title: "",
         plate: "",
         date: "",
+        introduction: "",
         content: null
       },
 
@@ -81,6 +85,7 @@ export default {
             trigger: "change"
           }
         ],
+        brief: [{ message: "请填写简介", trigger: "blur" }],
         content: [
           { required: true, message: "请填写文章内容", trigger: "blur" }
         ]
@@ -179,16 +184,20 @@ export default {
     height: 96vh;
 
     .el-card__body {
-      height: 8rem;
+      height: 6.5rem;
       overflow: auto;
       padding: 0;
 
       .quill-editor {
-        height: 8rem !important;
+        height: 6.5rem !important;
         overflow: hidden;
 
         .ql-container {
-          height: 6rem;
+          white-space: pre-wrap !important;
+
+          .ql-editor {
+            height: 5.8rem;
+          }
         }
       }
     }
