@@ -129,8 +129,7 @@ export default {
             .then(() => {
               let formData = JSON.stringify(this.form);
               this.$http.post("SetData.php", formData).then(
-                res => {
-                  console.log(res);
+                () => {
                   bus.$emit("addYuqing");
                   bus.$emit("updateTable"); //更新当前专报内容
                   this.$message({
@@ -163,11 +162,6 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
-  },
-  watch: {
-    form(newForm) {
-      console.log(newForm);
     }
   }
 };

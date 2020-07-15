@@ -95,7 +95,6 @@ export default {
           this.tableData = data;
           this.totalCount = data.length;
           this.tableDataTotal = data;
-          console.log(data);
         },
         err => {
           console.log(err);
@@ -109,7 +108,6 @@ export default {
     //查询专报
     handleSearch(formName) {
       event.preventDefault();
-      console.log(this.form.date);
       if (this.form.date.length !== 0) {
         let formData = JSON.stringify(this.form);
         this.$http.post("FindData.php", formData).then(

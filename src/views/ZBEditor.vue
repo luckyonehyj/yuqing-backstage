@@ -50,6 +50,7 @@
             icon="el-icon-edit"
           ></el-button>
           <el-button
+            :ref="`deleteBtn${scope.$index}`"
             size="small"
             type="info"
             @click="handleDelete(scope.$index, scope.row)"
@@ -112,7 +113,6 @@ export default {
     getData() {
       this.$http.post("FindDataId.php", this.currentZB).then(
         res => {
-          console.log(res.body);
           const data = res.body;
           this.tableData = data;
           this.totalCount = data.length;
@@ -160,6 +160,7 @@ export default {
         type: "warning"
       })
         .then(() => {
+          this.$refs[`deleteBtn${index}`].disabled = "disabled"; //防止短时间多次点击删除按钮，导致一条舆情多次删除，造成数据错误
           this.$http.post("DeleteDataContent.php", JSON.stringify(row)).then(
             res => {
               if (res.body) {
@@ -174,10 +175,10 @@ export default {
                   type: "success",
                   message: "删除成功!"
                 });
-                // console.log(this.deleteBtn);
               }
             },
             err => {
+              this.$refs[`deleteBtn${index}`].disabled = "";
               console.log(err);
               this.$message({
                 type: "warning",
@@ -198,7 +199,6 @@ export default {
     // },
     goBack() {
       this.$router.go(-1);
-      console.log("goback");
     }
   },
 
