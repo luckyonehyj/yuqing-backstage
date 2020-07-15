@@ -132,7 +132,7 @@ export default {
                 res => {
                   console.log(res);
                   bus.$emit("addYuqing");
-
+                  bus.$emit("updateTable"); //更新当前专报内容
                   this.$message({
                     type: "success",
                     message: "添加成功"

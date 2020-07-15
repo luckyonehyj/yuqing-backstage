@@ -74,6 +74,7 @@
 <script>
 import Edit from "@/components/Edit";
 import bus from "@/utils/bus";
+// import _ from "lodash";
 export default {
   data() {
     return {
@@ -161,12 +162,11 @@ export default {
         .then(() => {
           this.$http.post("DeleteDataContent.php", JSON.stringify(row)).then(
             res => {
-              console.log(res.body);
               if (res.body) {
                 this.$router.go(-1);
                 this.$message({
                   type: "success",
-                  message: "专报已删除!"
+                  message: "专报已空，自动删除!"
                 });
               } else {
                 this.getData();
@@ -174,6 +174,7 @@ export default {
                   type: "success",
                   message: "删除成功!"
                 });
+                // console.log(this.deleteBtn);
               }
             },
             err => {
@@ -192,11 +193,15 @@ export default {
           });
         });
     },
+    // handleDelete: (index, row) => {
+    //   _.throttle(this.handleDelete0(index, row), 2000);
+    // },
     goBack() {
       this.$router.go(-1);
       console.log("goback");
     }
   },
+
   mounted() {
     this.getData();
     bus.$on("updateTable", () => {
