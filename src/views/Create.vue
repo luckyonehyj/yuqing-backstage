@@ -11,16 +11,16 @@
     <!-- 表单 -->
     <el-form ref="form" :model="form" label-width="90px" :rules="rules">
       <!-- 标题填写 -->
-      <el-form-item label="文章标题" prop="title">
+      <el-form-item label="文章标题" prop="title" style="width:80%">
         <el-input v-model="form.title" placeholder="请输入文章标题"></el-input>
       </el-form-item>
       <!-- 链接填写 -->
-      <el-form-item label="文章链接" prop="url">
+      <el-form-item label="文章链接" prop="url" style="width:80%">
         <el-input v-model="form.url" placeholder="填写链接后无需再填写文章内容 !"></el-input>
       </el-form-item>
-      <div style="display:flex">
+      <div style="display:flex;width:95%">
         <!-- 板块选择-->
-        <el-form-item label="选择板块" prop="plate" style="margin-right:1rem">
+        <el-form-item label="选择板块" prop="plate" style="margin-right:.5rem">
           <el-select v-model="form.plate" placeholder="请选择板块">
             <el-option label="涉零舆情" value="yuqing"></el-option>
             <el-option label="敏感信息" value="mingan"></el-option>
@@ -41,12 +41,12 @@
         </el-form-item>
       </div>
       <!-- 简介填写 -->
-      <el-form-item label="填写简介" prop="introduction">
+      <el-form-item label="填写简介" prop="introduction" style="width:95%">
         <el-input type="textarea" :rows="2" placeholder="请输入简介" v-model="form.introduction"></el-input>
       </el-form-item>
 
       <!-- 文章填写 -->
-      <el-form-item label="填写内容" prop="content" id="content">
+      <el-form-item label="填写内容" prop="content" id="content" style="width:95%">
         <el-card>
           <quill-editor
             v-model="form.content"
@@ -57,7 +57,7 @@
         </el-card>
       </el-form-item>
       <!-- 完成/重置按钮 -->
-      <el-form-item>
+      <el-form-item >
         <el-button type="primary" @click="submitForm('form')">完成</el-button>
         <el-button @click="resetForm('form')">重置</el-button>
       </el-form-item>
@@ -215,8 +215,9 @@ export default {
 .title {
   height: 20%;
   box-sizing: border-box;
-  font-size: 0.45rem;
-  padding: 0.266667rem 0 0.7rem;
+  font-size: 0.48rem;
+  padding: 0.28rem 0 0.7rem 0;
+  margin-left: -0.2rem;
 }
 
 .el-table_1_column_1 .cell {

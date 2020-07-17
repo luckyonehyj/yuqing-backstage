@@ -5,16 +5,16 @@
       <!-- 表单 -->
       <el-form ref="form" :model="form" label-width="95px" :rules="rules">
         <!-- 标题 -->
-        <el-form-item label="文章标题" prop="title">
+        <el-form-item label="文章标题" prop="title" style="width:80%">
           <el-input v-model="form.title" placeholder="请输入文章标题"></el-input>
         </el-form-item>
         <!-- 链接填写 -->
-        <el-form-item label="文章链接" prop="url">
+        <el-form-item label="文章链接" prop="url" style="width:80%">
           <el-input v-model="form.url" placeholder="填写链接后无需再填写文章内容 !"></el-input>
         </el-form-item>
-        <div style="display:flex">
+        <div style="display:flex;width:95%">
           <!-- 板块 -->
-          <el-form-item label="选择板块" prop="plate" style="margin-right:.5rem">
+          <el-form-item label="选择板块" prop="plate" style="margin-right:.2rem">
             <el-select v-model="form.plate" placeholder="请选择板块">
               <el-option label="涉零舆情" value="yuqing"></el-option>
               <el-option label="敏感信息" value="mingan"></el-option>
@@ -30,11 +30,11 @@
           </el-form-item>
         </div>
         <!-- 简介填写 -->
-        <el-form-item label="填写简介" prop="brief">
+        <el-form-item label="填写简介" prop="brief" style="width:95%">
           <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.introduction"></el-input>
         </el-form-item>
         <!-- 内容 -->
-        <el-form-item label="填写内容" prop="content">
+        <el-form-item label="填写内容" prop="content" style="width:95%">
           <el-card>
             <quill-editor
               v-model="form.content"
@@ -198,7 +198,6 @@ export default {
       padding: 0;
 
       .quill-editor {
-        background-color: yellow;
         height: 5.8rem !important;
         overflow: hidden;
 
@@ -206,7 +205,6 @@ export default {
           white-space: pre-wrap !important;
 
           .ql-editor {
-            background-color: pink;
             max-height: 5rem;
           }
         }

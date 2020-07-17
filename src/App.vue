@@ -93,6 +93,10 @@ export default {
     }
   }
 
+  .el-tabs__content {
+    margin-left: 3rem;
+  }
+
   .el-tab-pane {
     padding-right: 0.533333rem;
     box-sizing: border-box;
