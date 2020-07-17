@@ -6,23 +6,29 @@
       <el-form ref="form" :model="form" label-width="95px" :rules="rules">
         <!-- 标题 -->
         <el-form-item label="文章标题" prop="title">
-          <el-input v-model="form.title" style="width:45.8%;" placeholder="请输入文章标题"></el-input>
+          <el-input v-model="form.title" placeholder="请输入文章标题"></el-input>
         </el-form-item>
-        <!-- 板块 -->
-        <el-form-item label="选择板块" prop="plate">
-          <el-select v-model="form.plate" placeholder="请选择板块">
-            <el-option label="涉零舆情" value="yuqing"></el-option>
-            <el-option label="敏感信息" value="mingan"></el-option>
-            <el-option label="贴文信息" value="tiewen"></el-option>
-            <el-option label="社会热点" value="redian"></el-option>
-          </el-select>
+        <!-- 链接填写 -->
+        <el-form-item label="文章链接" prop="url">
+          <el-input v-model="form.url" placeholder="填写链接后无需再填写文章内容 !"></el-input>
         </el-form-item>
-        <!-- 日期 -->
-        <el-form-item label="选择日期" prop="date">
-          <el-col :span="11">
-            <el-date-picker placeholder="选择日期" v-model="form.date" style="width: 200px;"></el-date-picker>
-          </el-col>
-        </el-form-item>
+        <div style="display:flex">
+          <!-- 板块 -->
+          <el-form-item label="选择板块" prop="plate" style="margin-right:.5rem">
+            <el-select v-model="form.plate" placeholder="请选择板块">
+              <el-option label="涉零舆情" value="yuqing"></el-option>
+              <el-option label="敏感信息" value="mingan"></el-option>
+              <el-option label="贴文信息" value="tiewen"></el-option>
+              <el-option label="社会热点" value="redian"></el-option>
+            </el-select>
+          </el-form-item>
+          <!-- 日期 -->
+          <el-form-item label="选择日期" prop="date">
+            <el-col :span="11">
+              <el-date-picker placeholder="选择日期" v-model="form.date" style="width: 200px;"></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </div>
         <!-- 简介填写 -->
         <el-form-item label="填写简介" prop="brief">
           <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.introduction"></el-input>
@@ -85,10 +91,10 @@ export default {
             trigger: "change"
           }
         ],
-        brief: [{ message: "请填写简介", trigger: "blur" }],
-        content: [
-          { required: true, message: "请填写文章内容", trigger: "blur" }
-        ]
+        introduction: [
+          { required: true, message: "请填写简介", trigger: "blur" }
+        ],
+        content: [{ message: "请填写文章内容", trigger: "blur" }]
       },
       // 编辑器配置项
       editorOption: {
@@ -100,7 +106,7 @@ export default {
             [{ direction: "rtl" }], // 文字输入方向
             [{ color: [] }, { background: [] }], // 颜色选择
             [{ align: [] }], // 居中
-            ["image", "video", "link"],
+            ["image", "video"],
             ["clean"] //新添加的工具 // 清除样式
           ]
         }
@@ -176,27 +182,32 @@ export default {
 </script>
 <style lang="stylus">
 #edit {
+  height: 100vh;
+
   .el-textarea__inner {
     height: 1.2rem;
   }
 
   .el-dialog {
     height: 96vh;
+    margin: auto;
+    overflow: auto;
 
     .el-card__body {
-      height: 6.5rem;
-      overflow: auto;
+      height: 5.8rem;
       padding: 0;
 
       .quill-editor {
-        height: 6.5rem !important;
+        background-color: yellow;
+        height: 5.8rem !important;
         overflow: hidden;
 
         .ql-container {
           white-space: pre-wrap !important;
 
           .ql-editor {
-            height: 5.8rem;
+            background-color: pink;
+            max-height: 5rem;
           }
         }
       }

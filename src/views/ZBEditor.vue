@@ -90,11 +90,10 @@ export default {
       //当前舆情表格数据
       tableData: [],
       //全体舆情表格数据
-      tableDataTotal: [],
       // 默认显示第几页
       currentPage: 1,
       // 总条数
-      totalCount: 100,
+      totalCount: 0,
       // 默认每页显示的条数
       PageSize: 9
     };
@@ -114,9 +113,16 @@ export default {
       this.$http.post("FindDataId.php", this.currentZB).then(
         res => {
           const data = res.body;
-          this.tableData = data;
-          this.totalCount = data.length;
-          this.tableDataTotal = data;
+          //解决刷新数据丢失的问题
+          if (data instanceof Array) {
+            this.tableData = data;
+            this.totalCount = data.length;
+            sessionStorage.setItem("tableDataTotal", JSON.stringify(data));
+          } else {
+            this.tableData = JSON.parse(
+              sessionStorage.getItem("tableDataTotal")
+            );
+          }
         },
         err => {
           console.log(err);
@@ -194,9 +200,7 @@ export default {
           });
         });
     },
-    // handleDelete: (index, row) => {
-    //   _.throttle(this.handleDelete0(index, row), 2000);
-    // },
+
     goBack() {
       this.$router.go(-1);
     }

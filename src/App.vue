@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <el-tabs type="border-card" v-model="activeName" tab-position="left" stretch>
+    <el-tabs
+      type="border-card"
+      v-model="activeName"
+      tab-position="left"
+      stretch
+      @tab-click="handleClick"
+    >
       <el-tab-pane label="管理专报" name="专报概述">
         <span slot="label">
           <i class="el-icon-menu"></i>专报概述
@@ -36,13 +42,19 @@ import User from "@/views/User";
 export default {
   data() {
     return {
-      activeName: "管理专报"
+      activeName: sessionStorage.getItem("activeTab") || "创建舆情"
     };
   },
+
   components: {
     Home,
     Create,
     User
+  },
+  methods: {
+    handleClick(tab) {
+      sessionStorage.setItem("activeTab", tab.name);
+    }
   }
 };
 </script>
