@@ -16,7 +16,7 @@
       </el-form-item>
       <!-- 链接填写 -->
       <el-form-item label="文章链接" prop="url" style="width:80%">
-        <el-input v-model="form.url" placeholder="填写链接后无需再填写文章内容 !"></el-input>
+        <el-input v-model="form.url" placeholder="请正确填写链接，没有链接请勿填！"></el-input>
       </el-form-item>
       <div style="display:flex;width:95%">
         <!-- 板块选择-->
@@ -57,7 +57,7 @@
         </el-card>
       </el-form-item>
       <!-- 完成/重置按钮 -->
-      <el-form-item >
+      <el-form-item>
         <el-button type="primary" @click="submitForm('form')">完成</el-button>
         <el-button @click="resetForm('form')">重置</el-button>
       </el-form-item>
@@ -105,8 +105,7 @@ export default {
         ],
         introduction: [
           { required: true, message: "请填写简介", trigger: "blur" }
-        ],
-        content: [{ message: "请填写文章内容", trigger: "blur" }]
+        ]
       },
       // 编辑器配置项
       editorOption: {
